@@ -1,0 +1,69 @@
+// import the servo library:
+#include <Servo.h>
+
+// create an object for a servo:
+Servo servo_1;  //servo 1
+Servo servo_2;  //servo 2
+Servo servo_3;  //servo 3
+ 
+// define the analog input pin on the Arduino for 
+// the potentiometer that you wish to use to control the servo:
+#define pot_1 A0  // analog pin used to connect the potentiometer 1
+#define pot_2 A1  // analog pin used to connect the potentiometer 2
+#define pot_3 A2  // analog pin used to connect the potentiometer 3
+
+// pre-define some variables to use for converting 
+// potentiometer value to servo angle:
+int potval_1;
+int potval_2; 
+int potval_3; 
+  
+int angle_1;
+int angle_2;
+int angle_3; 
+
+// initialise the servo devices and the serial monitor:
+void setup() {
+  servo_1.attach(9);
+  servo_2.attach(10);
+  servo_3.attach(11);  
+  Serial.begin(9600);
+}
+ 
+void loop() {
+  // read the potentiometer value from the analog
+  // input pin (values will be between 0 and 1023):
+  potval_1 = analogRead(pot_1);
+  potval_2 = analogRead(pot_2);
+  potval_3 = analogRead(pot_3);
+  
+  // scale the potentiometer value to a servo angle 
+  // (angles must be between 0 and 180 degrees):
+  angle_1 = map(potval_1, 0, 1023, 0, 180);
+  angle_2 = map(potval_2, 0, 1023, 0, 180);
+  angle_3 = map(potval_3, 0, 1023, 0, 180);
+
+  // write the servo angle to the servo device to make
+  // it move:
+  servo_1.write(angle_1);
+  delay(105);
+  servo_2.write(angle_2);
+  delay(105);
+  servo_3.write(angle_3);
+  delay(105);
+  // write data to the serial monitor.
+  // convert the angle range to -90 to +90 degrees
+  // so that the centre position is shown as 0:
+ //Serial.print("");
+ Serial.print("Servo 1 angle = ");
+ Serial.println(angle_1 -90);
+ Serial.print("\t");
+ Serial.print("Servo 2 angle = ");
+ Serial.println(angle_2 -90);
+ Serial.print("\t");
+ Serial.print("Servo 3 angle = ");
+ Serial.println(angle_3 -90);
+
+  // give the servo some time to respond (15 milliseconds):
+  delay(15);
+}
